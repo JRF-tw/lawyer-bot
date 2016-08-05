@@ -10,7 +10,7 @@ app = Bottle()
 
 @app.route('/hooks/messenger')
 def messenger_hook():
-    if request.query.get('hub.verify_token' == VERIFY_TOKEN):
+    if request.query.get('hub.verify_token') == VERIFY_TOKEN:
         return request.query.get('hub.challenge')
     else:
         return 'Procedure illegal'
