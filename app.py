@@ -15,5 +15,5 @@ def messenger_hook():
     else:
         return 'Procedure illegal'
 
-if __name__ = '__main__':
+if __name__ == '__main__':
     app.run()
