@@ -9,7 +9,7 @@ class Rule(object):
     '''
     def match(self, message):
         for expr in self.match_expr():
-            m = re.search(expr, message.text)
+            m = re.search(expr, message)
             if m:
                 return self.run(message, **m.groupdict())
         return None

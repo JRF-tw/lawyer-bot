@@ -5,7 +5,7 @@ class HelloRule(Rule):
         return (r'(H(i|ello)|安安|[你妳]好|哈囉|嗨)',)
 
     def run(self, message, **kwargs):
-        return '嗨 {}，我是黑熊莉絲。'.format(message.from_user.username)
+        return '安安，我是黑熊莉絲。'
 
 class FallbackRule(Rule):
     def match(self, message):
