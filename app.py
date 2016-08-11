@@ -33,7 +33,7 @@ def messenger_hook():
     if not check_signature:
         return abort(400, 'Invalid request')
 
-    entity = request.json()
+    entity = request.json
     messaging = entity['entry'][0]['messaging'][0]
     for rule in rules:
         text = rule.match(bot, messaging['message']['text'])
