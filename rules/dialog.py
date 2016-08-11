@@ -37,7 +37,7 @@ class TeachDialogRule(Rule):
 class DialogRule(Rule):
     def match(self, message):
         for keyword in DIALOGUES.keys():
-            if keyword in message.text:
+            if keyword in message:
                 return self.run(message, keyword=keyword)
         return None
 
