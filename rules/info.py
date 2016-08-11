@@ -7,4 +7,4 @@ class TimeRule(Rule):
 
     def run(self, message, **kwargs):
         now = datetime.now()
-        return '齁齁，現在的時間是 {:%Y/%m/%d %H:%M}。'.format(now, term, days)
+        return '齁齁，現在的時間是 {:%Y/%m/%d %H:%M}。'.format(now)
