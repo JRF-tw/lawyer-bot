@@ -7,11 +7,11 @@ class Rule(object):
     '''
     Check if a rule applies and `run()` the rule; return `None` otherwise.
     '''
-    def match(self, bot, message):
+    def match(self, message):
         for expr in self.match_expr():
             m = re.search(expr, message.text)
             if m:
-                return self.run(bot, message, **m.groupdict())
+                return self.run(message, **m.groupdict())
         return None
 
     '''
@@ -25,5 +25,5 @@ class Rule(object):
     '''
     Executes the rule.
     '''
-    def run(self, bot, message, **kwargs):
+    def run(self, message, **kwargs):
         pass

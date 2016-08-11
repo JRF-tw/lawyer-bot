@@ -36,7 +36,7 @@ def messenger_hook():
     entity = request.json
     messaging = entity['entry'][0]['messaging'][0]
     for rule in rules:
-        text = rule.match(bot, messaging['message']['text'])
+        text = rule.match(messaging['message']['text'])
         if text:
             facebook.send_message(messaging['sender']['id'], text)
             return
