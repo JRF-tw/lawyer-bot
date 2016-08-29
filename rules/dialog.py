@@ -1,14 +1,24 @@
 import json
 import os
 import random
+import peewee as p
 from .rule import Rule
 
 DIALOGUES = {}
-try:
-    with open('dialog.json', 'r') as f:
-        DIALOGUES.update(json.load(f))
-except IOError:
-    pass
+DATABASE = p.SqliteDatabase('../bot.db')
+
+class Match(p.Model):
+    keyword = p.CharField(max_length=32)
+    answer = p.TextField()
+    class Meta:
+        database = DATABASE
+
+DATABASE.connect()
+Match.create_table(fail_silently=True)
+for match in Match.select():
+    answers = DIALOGUES.get(match.keyword, [])
+    answers.append(match.answer)
+    DIALOGUES[match.keyword] = answers
 
 class TeachDialogRule(Rule):
     def match_expr(self):
@@ -20,13 +30,9 @@ class TeachDialogRule(Rule):
         else:
             DIALOGUES[keyword] = [answer]
 
-        try:
-            with open('dialog.json', 'w') as f:
-                json.dump(DIALOGUES, f, ensure_ascii=False, indent='\t')
-        except IOError:
-            pass
-        finally:
-            print(keyword, answer)
+        match = Match(keyword=keyword, answer=answer)
+        match.save()
+        print(keyword, answer)
 
         return random.choice((
             '好的～',
