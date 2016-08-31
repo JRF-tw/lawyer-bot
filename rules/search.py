@@ -19,6 +19,6 @@ class SearchRule(Rule):
                 article = random.choice(response['articles'])
                 author, _, occupation = article.get('author', '秘密人物').replace('文／', '').partition('／')
                 url = 'https://www.jrf.org.tw/articles/{}'.format(article['id'])
-                return '推薦一篇好文章〈{}〉，是由{}{}主筆的哦！\n'.format(article['title'], occupation, author, url)
+                return '推薦一篇好文章〈{}〉，是由{}{}主筆的哦！\n{}'.format(article['title'], occupation, author, url)
         except:
             return '嗚呃，網站在維修！'
