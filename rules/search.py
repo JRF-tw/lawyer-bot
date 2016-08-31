@@ -5,7 +5,7 @@ from .rule import Rule
 class SearchRule(Rule):
     def match_expr(self):
         return (
-            r'我?[要想](找|問|知道)(關於|什麼是)?(?<keyword>\S+)(是什麼)?',
+            r'我?[要想](找|問|知道)(關於|什麼是)?(?P<keyword>\S+)(是什麼)?',
         )
 
     def run(self, message, keyword, **kwargs):
