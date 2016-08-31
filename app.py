@@ -15,6 +15,7 @@ app = Bottle()
 rules = [
     rules.TimeRule(),
     rules.HelpRule(),
+    rules.SearchRule(),
     rules.TeachDialogRule(),
     rules.DialogRule(),
     rules.HelloRule(),
