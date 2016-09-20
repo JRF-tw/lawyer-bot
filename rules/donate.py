@@ -12,5 +12,5 @@ class DonateRule(Rule):
             return '歡迎定期定額贊助司改會！請點：\nhttps://www.jrf.org.tw/donate'
         elif re.search('發票', message):
             return '司改會的電子發票代碼是「948」，諧音「救司法」，歡迎在結帳的時候使用，把發票寄給我們喔！'
-        else
+        else:
             return '歡迎捐款贊助司改會喔！請點：\nhttps://donate.jrf.org.tw'
