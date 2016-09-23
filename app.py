@@ -43,7 +43,7 @@ def messenger_hook():
     except KeyError:
         pass
 
-    for message in filter(messages):
+    for message in filter(messages, None):
         for rule in rules:
             text = rule.match(message)
             if text:
