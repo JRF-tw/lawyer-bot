@@ -13,7 +13,7 @@ class Message(object):
         self.text = text
 
     def __str__(self):
-        return "Message(sender='{sender}', text='{text}')".format(self.__dict__)
+        return "Message(sender='{sender}', text='{text}')".format(**self.__dict__)
 
 def send_message(recipient, message):
     api_url = '{}/me/messages?access_token={}'.format(API_BASE_URL, PAGE_ACCESS_TOKEN)
