@@ -5,7 +5,7 @@ import peewee as p
 from .rule import Rule
 
 DIALOGUES = {}
-DATABASE = p.SqliteDatabase('../bot.db')
+DATABASE = p.SqliteDatabase('bot.db')
 
 class Match(p.Model):
     keyword = p.CharField(max_length=32)
