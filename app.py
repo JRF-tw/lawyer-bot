@@ -31,11 +31,13 @@ def verification_hook():
 
 @app.post('/hooks/messenger')
 def messenger_hook():
+    entity = request.json
+
     if not check_signature():
         pass #return abort(400, 'Invalid request')
 
     messages = []
-    for entry_dict in request.json['entry']:
+    for entry_dict in entity['entry']:
         for message_dict in entry_dict['messaging']:
             message = facebook.parse_message(message_dict)
             messages.append(message)
