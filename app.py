@@ -2,6 +2,7 @@
 import facebook
 import hmac
 import io
+import json
 import os
 import rules
 from bottle import Bottle, request, route, run, abort
@@ -31,10 +32,13 @@ def verification_hook():
 
 @app.post('/hooks/messenger')
 def messenger_hook():
-    entity = request.json
-
     if not check_signature():
         pass #return abort(400, 'Invalid request')
+
+    try:
+        entity = json.load(request.body)
+    except json.JSONDecodeError:
+        return  # Malformed JSON
 
     messages = []
     for entry_dict in entity['entry']:
