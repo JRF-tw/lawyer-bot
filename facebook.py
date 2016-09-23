@@ -6,11 +6,11 @@ PAGE_ACCESS_TOKEN = os.environ.get('JRF_PAGE_ACCESS_TOKEN')
 API_BASE_URL = 'https://graph.facebook.com/v2.6'
 
 class Message(object):
-    def __init__(self, **options):
-        self.sender = options.get('sender')
-        self.recipient = options.get('recipient')
-        self.timestamp = options.get('timestamp')
-        self.text = options.get('text')
+    def __init__(self, sender=None, recipient=None, timestamp=None, text=None):
+        self.sender = sender
+        self.recipient = recipient
+        self.timestamp = timestamp
+        self.text = text
 
 def send_message(recipient, message):
     api_url = '{}/me/messages?access_token={}'.format(API_BASE_URL, PAGE_ACCESS_TOKEN)
