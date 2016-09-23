@@ -30,10 +30,10 @@ def send_message(recipient, message):
 
 def parse_message(entity):
     try:
-        sender = entity['sender']['id']
-        recipient = entity['recipient']['id']
-        timestamp = datetime.fromtimestamp(entity['timestamp'] / 1000.0)
-        text = entity['message']['text']
-        return Message(sender, recipient, text, timestamp)
+        return Message(
+            sender=entity['sender']['id'],
+            recipient=entity['recipient']['id'],
+            timestamp=datetime.fromtimestamp(entity['timestamp'] / 1000.0),
+            text=entity['message']['text'])
     except KeyError:
         return None
