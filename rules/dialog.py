@@ -4,8 +4,13 @@ import random
 import peewee as p
 from .rule import Rule
 
+SUPERVISORS = []
 DIALOGUES = {}
 DATABASE = p.SqliteDatabase('bot.db')
+
+class User(p.Model):
+    user_id = p.CharField(max_length=64, unique=True)
+    is_admin = p.BooleanField(default=False)
 
 class Match(p.Model):
     keyword = p.CharField(max_length=32)
@@ -14,6 +19,10 @@ class Match(p.Model):
         database = DATABASE
 
 DATABASE.connect()
+User.create_table(fail_silently=True)
+for user in User.select().where(User.is_admin == True):
+    SUPERVISORS.append(user.user_id)
+
 Match.create_table(fail_silently=True)
 for match in Match.select():
     answers = DIALOGUES.get(match.keyword, [])
@@ -21,6 +30,12 @@ for match in Match.select():
     DIALOGUES[match.keyword] = answers
 
 class TeachDialogRule(Rule):
+    def match(self, message):
+        if message.sender in SUPERVISORS:
+            return super().match(message)
+        print('User', message.sender, 'triggered training but rejected')
+        return None
+
     def match_expr(self):
         return (r'我(如果|若|一旦)?(說|講|提到)\s*「?(?P<keyword>.+?)」?，?\s*你就?要?(說|講|大喊)\s*「?(?P<answer>.+?)」?\s*$',)
 
