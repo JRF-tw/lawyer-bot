@@ -4,6 +4,7 @@ import facebook
 import hmac
 import io
 import json
+import logging
 import os
 import rules
 from bottle import Bottle, request, route, run, abort
@@ -14,6 +15,7 @@ APP_SECRET = os.environ.get('JRF_APP_SECRET')
 
 # Variables
 app = Bottle()
+logger = logging.getLogger('bot')
 rules = [
     rules.TimeRule(),
     rules.HelpRule(),
@@ -23,6 +25,10 @@ rules = [
     rules.HelloRule(),
     rules.FallbackRule(),
 ]
+
+# Configure logger
+log_path = os.path.join(os.environ.get('LOGDIR', '.'), 'jrf_bot.log')
+logging.basicConfig(filename=log_path, level=logging.DEBUG)
 
 @app.route('/hooks/messenger')
 def verification_hook():
@@ -37,6 +43,8 @@ def messenger_hook():
         reader = codecs.getreader('utf-8')
         entity = json.load(reader(request.body))
     except json.JSONDecodeError:
+        logger.warning('Malformed JSON received')
+        logger.debug(request.body.read().decode('latin1'))
         return  # Malformed JSON
 
     if not check_signature():
@@ -47,7 +55,7 @@ def messenger_hook():
         for message_dict in entry_dict['messaging']:
             message = facebook.parse_message(message_dict)
             messages.append(message)
-            print(message)
+            logger.debug(str(message))
 
     for message in filter(None, messages):
         for rule in rules:
@@ -58,8 +66,9 @@ def messenger_hook():
 
 def check_signature():
     signature = request.get_header('X-Hub-Signature')
-    print('Signature', signature)
+    logger.debug('Signature [%s]', signature)
     if not signature.startswith('sha1='):
+        logger.warning('Signature method invalid')
         return False
 
     # Read and encode non-ASCII string
@@ -74,7 +83,7 @@ def check_signature():
 
     # Hash it
     h = hmac.new(APP_SECRET.encode(), buf.getbuffer(), 'sha1').hexdigest().lower()
-    print('Calculated', h)
+    logger.debug('Calculated signature [%s]', h)
     return hmac.compare_digest(h, signature[4:])
 
 if __name__ == '__main__':

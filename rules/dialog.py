@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import random
 import peewee as p
@@ -6,7 +7,8 @@ from .rule import Rule
 
 SUPERVISORS = []
 DIALOGUES = {}
-DATABASE = p.SqliteDatabase('./bot.db')
+DATABASE = p.SqliteDatabase(os.environ.get('DBPATH', 'bot.db'))
+logger = logging.getLogger('bot')
 
 class User(p.Model):
     user_id = p.CharField(max_length=64, unique=True)
@@ -35,7 +37,7 @@ class TeachDialogRule(Rule):
 
     def run(self, message, keyword, answer, **kwargs):
         if message.sender not in SUPERVISORS:
-            print('User', message.sender, 'triggered training but rejected')
+            logger.waring('User %s triggered training but rejected', message.sender)
             return None
 
         if keyword in DIALOGUES:
