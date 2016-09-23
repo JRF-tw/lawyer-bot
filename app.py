@@ -34,13 +34,21 @@ def messenger_hook():
     if not check_signature:
         return abort(400, 'Invalid request')
 
-    entity = request.json
-    messaging = entity['entry'][0]['messaging'][0]
-    for rule in rules:
-        text = rule.match(messaging['message']['text'])
-        if text:
-            facebook.send_message(messaging['sender']['id'], text)
-            return
+    messages = []
+    try:
+        for entry_dict in request.json['entry']:
+            for message_dict in entry_dict['messaging']:
+                message = facebook.parse_message(message_dict)
+                messages.append(message)
+    except KeyError:
+        pass
+
+    for message in filter(messages):
+        for rule in rules:
+            text = rule.match(message)
+            if text:
+                facebook.send_message(message.sender, text)
+            break
 
 def check_signature():
     signature = request.get_header('X-Hub-Signature')
