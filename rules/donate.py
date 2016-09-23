@@ -1,3 +1,4 @@
+import re
 from datetime import datetime
 from .rule import Rule
 
