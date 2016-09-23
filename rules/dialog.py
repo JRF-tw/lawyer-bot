@@ -39,7 +39,7 @@ class TeachDialogRule(Rule):
 
     def run(self, message, keyword, answer, **kwargs):
         if message.sender not in SUPERVISORS:
-            logger.waring('User %s triggered training but rejected', message.sender)
+            logger.warning('User %s triggered training but rejected', message.sender)
             return None
 
         if keyword in DIALOGUES:
