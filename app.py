@@ -54,7 +54,7 @@ def messenger_hook():
             text = rule.match(message)
             if text:
                 facebook.send_message(message.sender, text)
-            break
+                break
 
 def check_signature():
     signature = request.get_header('X-Hub-Signature')
