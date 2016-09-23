@@ -40,6 +40,7 @@ def messenger_hook():
             for message_dict in entry_dict['messaging']:
                 message = facebook.parse_message(message_dict)
                 messages.append(message)
+                print(message)
     except KeyError:
         pass
 

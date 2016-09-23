@@ -30,16 +30,14 @@ for match in Match.select():
     DIALOGUES[match.keyword] = answers
 
 class TeachDialogRule(Rule):
-    def match(self, message):
-        if message.sender in SUPERVISORS:
-            return super().match(message)
-        print('User', message.sender, 'triggered training but rejected')
-        return None
-
     def match_expr(self):
         return (r'我(如果|若|一旦)?(說|講|提到)\s*「?(?P<keyword>.+?)」?，?\s*你就?要?(說|講|大喊)\s*「?(?P<answer>.+?)」?\s*$',)
 
     def run(self, message, keyword, answer, **kwargs):
+        if message.sender not in SUPERVISORS:
+            print('User', message.sender, 'triggered training but rejected')
+            return None
+
         if keyword in DIALOGUES:
             DIALOGUES[keyword].append(answer)
         else:
