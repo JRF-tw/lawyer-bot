@@ -64,7 +64,7 @@ def check_signature():
             buf.write(c.encode())
 
     # Hash it
-    h = hmac.new(APP_SECRET.encode(), buf, 'sha1').hexdigest().lower()
+    h = hmac.new(APP_SECRET.encode(), buf.getbuffer(), 'sha1').hexdigest().lower()
     return hmac.compare_digest(h, signature[4:])
 
 if __name__ == '__main__':
