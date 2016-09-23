@@ -6,7 +6,7 @@ from .rule import Rule
 
 SUPERVISORS = []
 DIALOGUES = {}
-DATABASE = p.SqliteDatabase('bot.db')
+DATABASE = p.SqliteDatabase('./bot.db')
 
 class User(p.Model):
     user_id = p.CharField(max_length=64, unique=True)

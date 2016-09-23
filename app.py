@@ -32,13 +32,13 @@ def verification_hook():
 
 @app.post('/hooks/messenger')
 def messenger_hook():
-    if not check_signature():
-        pass #return abort(400, 'Invalid request')
-
     try:
         entity = json.load(request.body)
     except json.JSONDecodeError:
         return  # Malformed JSON
+
+    if not check_signature():
+        pass #return abort(400, 'Invalid request')
 
     messages = []
     for entry_dict in entity['entry']:
