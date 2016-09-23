@@ -5,7 +5,7 @@ class HelloRule(Rule):
         return (r'(H(i|ello)|安安|[你妳]好|哈囉|嗨)',)
 
     def run(self, message, **kwargs):
-        return '安安，我是黑熊莉絲。'
+        return '嗨，我是黑熊莉絲 ʕ •ᴥ•ʔ'
 
 class FallbackRule(Rule):
     def match(self, message):
@@ -19,4 +19,9 @@ class HelpRule(Rule):
         return (r'[你妳](能|可以|會).*([做幹]|幫.*)(什麼|嘛|啥)',)
 
     def run(self, message, **kwargs):
-        return '你可以跟我說「我說⋯⋯你就說⋯⋯」，我就會記在我的小本本上。'
+        return '''我是司改會的小夥伴黑熊莉絲～
+
+        你可以問我問題，我會盡力的從司改會的網站找資料，只要說「我要問」、「我想問」就可以了！
+        當然像是案件申訴、捐款資訊，我也都略知一二哦！
+        
+        一起打造人民信賴的司法！ ʕ •ᴥ•ʔ'''
