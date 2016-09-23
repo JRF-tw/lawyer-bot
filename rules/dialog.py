@@ -13,6 +13,8 @@ logger = logging.getLogger('bot')
 class User(p.Model):
     user_id = p.CharField(max_length=64, unique=True)
     is_admin = p.BooleanField(default=False)
+    class Meta:
+        database = DATABASE
 
 class Match(p.Model):
     keyword = p.CharField(max_length=32)
