@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import codecs
 import facebook
 import hmac
 import io
@@ -33,7 +34,8 @@ def verification_hook():
 @app.post('/hooks/messenger')
 def messenger_hook():
     try:
-        entity = json.load(request.body)
+        reader = codecs.getreader('utf-8')
+        entity = json.load(reader(request.body))
     except json.JSONDecodeError:
         return  # Malformed JSON
 
