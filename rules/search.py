@@ -43,6 +43,6 @@ class SearchRule(Rule):
                 }
                 if article['image']:
                     result["attachment"]["payload"]["elements"][0]["image_url"] = article['image']
-                return result
+            return result
         except:
             return '嗚呃，網站在維修！'
