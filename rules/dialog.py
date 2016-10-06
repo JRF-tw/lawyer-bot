@@ -2,38 +2,22 @@ import json
 import logging
 import os
 import random
-import peewee as p
 from .rule import Rule
+from models import User, Match, create_tables
 
-SUPERVISORS = []
 DIALOGUES = {}
-DATABASE = p.SqliteDatabase(os.environ.get('DBPATH', 'bot.db'))
 logger = logging.getLogger('bot')
 
-class User(p.Model):
-    user_id = p.CharField(max_length=64, unique=True)
-    is_admin = p.BooleanField(default=False)
-    class Meta:
-        database = DATABASE
-
-class Match(p.Model):
-    keyword = p.CharField(max_length=32)
-    answer = p.TextField()
-    class Meta:
-        database = DATABASE
-
-DATABASE.connect()
-User.create_table(fail_silently=True)
-for user in User.select().where(User.is_admin == True):
-    SUPERVISORS.append(user.user_id)
-
-Match.create_table(fail_silently=True)
 for match in Match.select():
     answers = DIALOGUES.get(match.keyword, [])
     answers.append(match.answer)
     DIALOGUES[match.keyword] = answers
 
 class TeachDialogRule(Rule):
+    def __init__(self):
+        super().__init__()
+        self.supervisors = [user.user_id for user in User.select().where(User.is_admin == True)]
+
     def match_expr(self):
         return (r'我(如果|若|一旦)?(說|講|提到)\s*「?(?P<keyword>.+?)」?，?\s*你就?要?(說|講|大喊)\s*「?(?P<answer>.+?)」?\s*$',)
 
